@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 function Cover(props) {
     const { id, name, hasZeroChapter } = props;
     const firstChapter = hasZeroChapter ? "00" : "01";
     const src = process.env.PUBLIC_URL + `/${id}/${firstChapter}/0001.png`;
-    return (<img src={src} style={{ width: 300, height: 400 }} alt={name} />);
+    return (<Link to="/reader"><img src={src} style={{ width: 300, height: 400 }} alt={name} /></Link>);
 }
 
 const Container = styled.div`
