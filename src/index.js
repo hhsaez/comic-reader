@@ -8,6 +8,7 @@ import Reader from './routes/Reader';
 
 const router = createBrowserRouter([
   { path: '/', element: <Library /> },
+  { path: '/comic-reader', element: <Library /> },
   { path: '/library', element: <Library /> },
   { path: '/reader', element: <Reader /> },
 ])
