@@ -3,15 +3,20 @@ import styled from "styled-components";
 
 const SContainer = styled.div`
   display: flex;
-  flex-grow: 1;
-  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  align-self: center;
 `;
 
 const SImage = styled.img`
   display: flex;
   flex-grow: 1;
-  height: 100%;
-  width: 100%;
+  flex-direction: row;
+  align-self: center;
+  max-width: 100%;
+  overflow: auto;
+  object-fit: contain;
 `;
 
 function pad(num, places) {

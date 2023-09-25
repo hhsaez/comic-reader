@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Page from "./Page";
+import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
+
 
 const SPageContainer = styled.div`
-  // width: 100%;
   display: flex;
+  position: relative; // So the interaction area is relative to this container
   flex-direction: column;
   flex-grow: 1;
-  justify-content: center;
-  align-items: center;
+  overflow: auto;
 `;
 
 export default function SinglePageLayout(props) {
@@ -19,6 +20,7 @@ export default function SinglePageLayout(props) {
   return (
     <SPageContainer>
       <Page key={currentPage} id={id} chapter={chapter} index={currentPage + 1} />
+      <PageNavigationOverlay setCurrentPage={setCurrentPage} pageCount={pageCount - 1} advance={1} />
     </SPageContainer>
   );
 }

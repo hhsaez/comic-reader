@@ -7,6 +7,8 @@ import SinglePageLayout from "./SinglePageLayout";
 import DoublePageLayout from "./DoublePageLayout";
 
 const HeaderContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
     width: 100%;
     height: 80px;
     background-color: lightgray;
@@ -47,8 +49,9 @@ function Header(props) {
 const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     width: 20%;
-    height: 100vh;
+    height: 100%;
     background-color: gray;
 `;
 
@@ -104,15 +107,15 @@ function Sidebar(props) {
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    // width: 100vw;
-    // height: 100vh;
+    width: 100vw;
+    height: 100vh;
     flex-grow: 1;
     background-color: darkgray;
 `;
 
-const Content = styled.div`
-    // width: 100%;
-    // height: 100%;
+const SContent = styled.div`
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -123,7 +126,7 @@ export default function Reader() {
     sidebar: {
       open: true,
     },
-    layout: "double-page",// "single-page",
+    layout: "single-page",
   });
 
   const data = { id: "jagerlied", name: "Jägerlied", chapter: 0, pageCount: 16 };
@@ -140,10 +143,10 @@ export default function Reader() {
     <ReaderContext.Provider value={{ context, setContext }}>
       <Container>
         <Sidebar />
-        <Content>
-          <Header title={name} />
-          <Layout id={id} chapter={chapter} pageCount={pageCount} />
-        </Content>
+        <SContent>
+          {/* <Header title={name} /> */}
+          <Layout id={id} chapter={chapter} pageCount={pageCount} style={{ flexGrow: 10 }} />
+        </SContent>
       </Container>
     </ReaderContext.Provider>
   );
