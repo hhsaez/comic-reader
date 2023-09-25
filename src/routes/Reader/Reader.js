@@ -104,16 +104,18 @@ function Sidebar(props) {
 const Container = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100vw;
-    height: 100vh;
+    // width: 100vw;
+    // height: 100vh;
+    flex-grow: 1;
     background-color: darkgray;
 `;
 
 const Content = styled.div`
-    width: 100%;
-    height: 100%;
+    // width: 100%;
+    // height: 100%;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 `;
 
 export default function Reader() {
@@ -121,7 +123,7 @@ export default function Reader() {
     sidebar: {
       open: true,
     },
-    layout: "single-page",
+    layout: "double-page",// "single-page",
   });
 
   const data = { id: "jagerlied", name: "Jägerlied", chapter: 0, pageCount: 16 };
