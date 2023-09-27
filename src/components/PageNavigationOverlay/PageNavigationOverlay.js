@@ -66,6 +66,11 @@ const STopBarContainer = styled.div`
   width: 100%;
   height: 50px;
   min-height: 50px;
+  color: black;
+
+  a { 
+    color: black;
+  }
 `;
 
 const STopBarLeftContainer = styled.div`
@@ -90,7 +95,18 @@ const STopBarMiddleContainer = styled.div`
   min-width: 0;
   
   label {
-    font-size: 2em;
+    font-family: Tahoma, sans-serif;
+    font-size: 1.2em;
+  }
+
+  @media screen and (max-width: 400px) {
+    label {
+      font-size: 0.8em;
+    }
+  }
+
+  @media screen and (max-width: 300px) {
+    display: none;
   }
 `;
 
