@@ -12,6 +12,19 @@ const SContainer = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
+
+  // background-color: red;
+
+  &.hidden {
+    opacity: 0;
+    // background-color: blue;
+  }
+
+  &.shown {
+    // background-color: green;
+    opacity: 1;
+    // transition: all 2s linear 2s;
+  }
 `;
 
 const SInteractionContainer = styled.div`
@@ -140,6 +153,8 @@ function TopBar(props) {
 }
 
 export function PageNavigationOverlay() {
+  const [visible, setVisible] = useState(true);
+
   const { context, setContext } = useContext(ReaderContext);
   const { info: { title, subtitle } = {} } = context;
 
@@ -152,8 +167,6 @@ export function PageNavigationOverlay() {
     };
   }), [setContext]);
 
-  console.log({ context });
-
   const prevPage = useCallback(() => setContext((ctx) => {
     const { currentPage, layout } = ctx;
     const advance = layout === "double-page" ? 2 : 1;
@@ -164,14 +177,8 @@ export function PageNavigationOverlay() {
   }), [setContext]);
 
   const toggleSidebar = useCallback(() => {
-    setContext((prev) => ({
-      ...prev,
-      sidebar: {
-        ...prev.sidebar,
-        open: !prev.sidebar.open,
-      }
-    }));
-  }, [setContext]);
+    setVisible((prev) => !prev);
+  }, [setVisible]);
 
   const fullTitle = useMemo(() => {
     if (subtitle) {
@@ -181,7 +188,7 @@ export function PageNavigationOverlay() {
   }, [title, subtitle])
 
   return (
-    <SContainer>
+    <SContainer className={`${visible ? "shown" : "hidden"}`} onTransitionEnd={() => setVisible(false)}>
       <TopBar title={fullTitle} />
       <SInteractionContainer>
         <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={prevPage}><NavigateBefore /></SInteractionArea>
