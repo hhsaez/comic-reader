@@ -24,10 +24,10 @@ function pad(num, places) {
 }
 
 export default function Page(props) {
-  const { id, chapter, index } = props;
+  const { id, chapter, index, ...rest } = props;
   const src = process.env.PUBLIC_URL + `/${id}/${pad(chapter, 2)}/${pad(index, 4)}.png`;
   return (
-    <SContainer key={index}>
+    <SContainer key={index} {...rest}>
       <SImage src={src} alt={`${id}_${index}`} />
     </SContainer>);
 }

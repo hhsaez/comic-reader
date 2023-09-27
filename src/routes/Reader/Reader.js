@@ -6,7 +6,7 @@ import SinglePageLayout from "./SinglePageLayout";
 import DoublePageLayout from "./DoublePageLayout";
 import "material-symbols";
 import { Selector } from "../../components/Selector";
-import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
+import { PageNavigationOverlay, TopBar } from "../../components/PageNavigationOverlay";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -163,9 +163,9 @@ export default function Reader() {
       open: true,
     },
     currentPage: 0,
-    layout: "single-page",
+    // layout: "single-page",
     // layout: "double-page",
-    // layout: "long-strip",
+    layout: "long-strip",
   });
 
   const { info: { id, chapter, pageCount } } = context;

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { ReaderContext } from "../../routes/Reader/ReaderContext";
 import { Link } from "react-router-dom";
@@ -13,18 +13,8 @@ const SContainer = styled.div`
   right: 0;
   bottom: 0;
 
-  // background-color: red;
-
-  &.hidden {
-    opacity: 0;
-    // background-color: blue;
-  }
-
-  &.shown {
-    // background-color: green;
-    opacity: 1;
-    // transition: all 2s linear 2s;
-  }
+  opacity: 0;
+  transition: all 1s ease-in-out;
 `;
 
 const SInteractionContainer = styled.div`
@@ -128,8 +118,17 @@ function ChangePageLayoutButton(props) {
   return <span className="material-symbols-outlined" onClick={setNewLayout}>{icon}</span>
 }
 
-function TopBar(props) {
-  const { title } = props;
+export function TopBar() {
+  const { context } = useContext(ReaderContext);
+  const { info: { title, subtitle } } = context;
+
+  const fullTitle = useMemo(() => {
+    if (subtitle) {
+      return `${title}: ${subtitle}`;
+    }
+    return title || "NO TITLE";
+  }, [title, subtitle])
+
   return (
     <STopBarContainer>
       <STopBarLeftContainer>
@@ -138,7 +137,7 @@ function TopBar(props) {
         </Link>
       </STopBarLeftContainer>
       <STopBarMiddleContainer>
-        <label>{title}</label>
+        <label>{fullTitle}</label>
       </STopBarMiddleContainer>
       <STopBarRightContainer>
         <ChangePageLayoutButton id="single-page" icon="note" />
@@ -155,8 +154,7 @@ function TopBar(props) {
 export function PageNavigationOverlay() {
   const [visible, setVisible] = useState(true);
 
-  const { context, setContext } = useContext(ReaderContext);
-  const { info: { title, subtitle } = {} } = context;
+  const { setContext } = useContext(ReaderContext);
 
   const nextPage = useCallback(() => setContext((ctx) => {
     const { info: { pageCount }, currentPage, layout } = ctx;
@@ -180,16 +178,19 @@ export function PageNavigationOverlay() {
     setVisible((prev) => !prev);
   }, [setVisible]);
 
-  const fullTitle = useMemo(() => {
-    if (subtitle) {
-      return `${title}: ${subtitle}`;
+  useEffect(() => {
+    if (!visible) {
+      return;
     }
-    return title || "NO TITLE";
-  }, [title, subtitle])
+    const timer = setTimeout(() => setVisible(false), 5000);
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [visible, setVisible]);
 
   return (
-    <SContainer className={`${visible ? "shown" : "hidden"}`} onTransitionEnd={() => setVisible(false)}>
-      <TopBar title={fullTitle} />
+    <SContainer style={{ opacity: visible ? 1 : 0 }}>
+      <TopBar />
       <SInteractionContainer>
         <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={prevPage}><NavigateBefore /></SInteractionArea>
         <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.15)", flexGrow: 4 }} onClick={toggleSidebar} />

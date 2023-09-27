@@ -23,7 +23,7 @@ export default function LongStripPageLayout(props) {
   const { id, chapter, pageCount } = props;
 
   const pages = new Array(pageCount).fill().map((_, pageIndex) => {
-    return <Page key={pageIndex} id={id} chapter={chapter} index={pageIndex + 1} />;
+    return <Page key={pageIndex} id={id} chapter={chapter} index={pageIndex + 1} style={{ margin: 5 }} />;
   });
 
   return (
