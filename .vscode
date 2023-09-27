@@ -1,7 +1,7 @@
 {
   "javascript.validate.enable": false,
   "[javascript]": {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": true
   },
   "[scss]": {
     "editor.formatOnSave": true

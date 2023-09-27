@@ -6,6 +6,7 @@ import SinglePageLayout from "./SinglePageLayout";
 import DoublePageLayout from "./DoublePageLayout";
 import "material-symbols";
 import { Selector } from "../../components/Selector";
+import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -161,6 +162,7 @@ export default function Reader() {
     sidebar: {
       open: true,
     },
+    currentPage: 0,
     layout: "single-page",
     // layout: "double-page",
     // layout: "long-strip",
@@ -178,9 +180,9 @@ export default function Reader() {
   return (
     <ReaderContext.Provider value={{ context, setContext }}>
       <Container>
-        {/* <Sidebar /> */}
         <SContent>
           <Layout id={id} chapter={chapter} pageCount={pageCount} style={{ flexGrow: 10 }} />
+          <PageNavigationOverlay />
         </SContent>
       </Container>
     </ReaderContext.Provider>

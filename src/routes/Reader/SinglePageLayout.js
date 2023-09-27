@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Page from "./Page";
-import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
+import { ReaderContext } from "./ReaderContext";
 
 
 const SPageContainer = styled.div`
@@ -13,14 +13,18 @@ const SPageContainer = styled.div`
 `;
 
 export default function SinglePageLayout(props) {
-  const { id, chapter, pageCount } = props;
-
-  const [currentPage, setCurrentPage] = useState(0);
+  const {
+    context: {
+      info: {
+        id, chapter
+      },
+      currentPage,
+    }
+  } = useContext(ReaderContext);
 
   return (
     <SPageContainer>
       <Page key={currentPage} id={id} chapter={chapter} index={currentPage + 1} />
-      <PageNavigationOverlay setCurrentPage={setCurrentPage} pageCount={pageCount - 1} advance={1} />
     </SPageContainer>
   );
 }

@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Page from "./Page";
-import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
+import { ReaderContext } from "./ReaderContext";
 
 const SPagesContainer = styled.div`
   display: flex;
@@ -19,16 +19,24 @@ const SContainer = styled.div`
 `;
 
 export default function DoublePageLayout(props) {
-  const { id, chapter, pageCount } = props;
-  const [currentPage, setCurrentPage] = useState(-1);
+  const {
+    context: {
+      info: {
+        id, chapter
+      },
+      currentPage,
+    }
+  } = useContext(ReaderContext);
+
+  // Left page is always the even one.
+  const firstPage = currentPage % 2 === 0 ? currentPage : currentPage - 1;
 
   return (
     <SContainer>
       <SPagesContainer>
-        <Page key={currentPage} id={id} chapter={chapter} index={currentPage + 1} />
-        <Page key={currentPage + 1} id={id} chapter={chapter} index={currentPage + 2} />
+        <Page key={firstPage - 1} id={id} chapter={chapter} index={firstPage} />
+        <Page key={firstPage} id={id} chapter={chapter} index={firstPage + 1} />
       </SPagesContainer>
-      <PageNavigationOverlay key={currentPage} setCurrentPage={setCurrentPage} pageCount={pageCount - 1} advance={2} />
     </SContainer>
   );
 }
