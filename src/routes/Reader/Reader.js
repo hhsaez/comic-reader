@@ -1,10 +1,11 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import LongStripPageLayout from "./LongStripPageLayout";
 import { ReaderContext } from "./ReaderContext";
 import SinglePageLayout from "./SinglePageLayout";
 import DoublePageLayout from "./DoublePageLayout";
+import "material-symbols";
+import { Selector } from "../../components/Selector";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -40,17 +41,18 @@ function Header(props) {
 
   return (
     <HeaderContainer>
-      <button onClick={openSidebar}>M</button>
-      <h1>{title}</h1>
+      <h1><span className="material-symbols-outlined" onClick={openSidebar}>menu</span>{title}</h1>
     </HeaderContainer>
   );
 }
+
 
 const SidebarContainer = styled.div`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     width: 20%;
+    min-width: 300px;
     height: 100%;
     background-color: gray;
 `;
@@ -68,24 +70,10 @@ function Sidebar(props) {
     }));
   }, [setContext]);
 
-  const setSinglePageLayout = useCallback(() => {
+  const setPageLayout = useCallback((layout) => {
     setContext((prev) => ({
       ...prev,
-      layout: "single-page",
-    }));
-  }, [setContext]);
-
-  const setDoublePageLayout = useCallback(() => {
-    setContext((prev) => ({
-      ...prev,
-      layout: "double-page",
-    }));
-  }, [setContext]);
-
-  const setLongStripPageLayout = useCallback(() => {
-    setContext((prev) => ({
-      ...prev,
-      layout: "long-strip",
+      layout,
     }));
   }, [setContext]);
 
@@ -95,11 +83,51 @@ function Sidebar(props) {
 
   return (
     <SidebarContainer style={{ width: !context.sidebar.open ? 0 : undefined }}>
-      <button onClick={closeSidebar}>Close Sidebar</button>
-      <button onClick={setSinglePageLayout}>Single Page</button>
-      <button onClick={setDoublePageLayout}>Double Page</button>
+      <span className="material-symbols-outlined" onClick={closeSidebar}>close</span>
+
+      <ul>
+        <li><h1><span className="material-symbols-outlined">home</span>Home</h1></li>
+        <li>
+          <h1><span className="material-symbols-outlined">settings</span>Settings</h1>
+          <ul>
+            <li>
+              <Selector title={"Page Layout"} value={context.layout} onChange={setPageLayout}>
+                {[
+                  { id: "single-page", icon: "note", name: "Single Page" },
+                  { id: "double-page", icon: "import_contacts", name: "Double Page" },
+                  { id: "long-strip", icon: "calendar_view_day", name: "Long Strip" },
+                ]}
+              </Selector>
+            </li>
+            <li>
+              <Selector title={"Image Sizing"}>
+                {[
+                  { icon: "fit_width", name: "Fit Width" },
+                  { icon: "fit_page", name: "Fit Page" },
+                ]}
+              </Selector>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      {/* <span className="material-symbols-outlined">expand</span>
+      <span className="material-symbols-outlined">note</span>
+      <span className="material-symbols-outlined">import_contacts</span>
+      <span className="material-symbols-outlined">calendar_view_day</span>
+      <span className="material-symbols-outlined">view_array</span>
+      <span className="material-symbols-outlined">view_column_2</span>
+      <span className="material-symbols-outlined">web_stories</span>
+      <span className="material-symbols-outlined">grid_view</span>
+      <span className="material-symbols-outlined">list</span>
+      <span className="material-symbols-outlined">phone_iphone</span>
+      <span className="material-symbols-outlined">computer</span>
+      <span className="material-symbols-outlined">space_bar</span> */}
+      {/* <button onClick={closeSidebar}>Close Sidebar</button>
+      <button style={{ borderStyle: "inset" }} onClick={setSinglePageLayout}>Single Page</button>
+      <button style={{ borderStyle: "outset" }} onClick={setDoublePageLayout}>Double Page</button>
       <button onClick={setLongStripPageLayout}>Long Strip</button>
-      <Link to="/library"><div>Back To Library</div></Link>
+      <Link to="/library"><div>Back To Library</div></Link> */}
     </SidebarContainer>
   );
 }
@@ -123,14 +151,22 @@ const SContent = styled.div`
 
 export default function Reader() {
   const [context, setContext] = useState({
+    info: {
+      id: "jagerlied",
+      title: "Jägerlied",
+      subtitle: "Obertura",
+      chapter: 0,
+      pageCount: 16,
+    },
     sidebar: {
       open: true,
     },
     layout: "single-page",
+    // layout: "double-page",
+    // layout: "long-strip",
   });
 
-  const data = { id: "jagerlied", name: "Jägerlied", chapter: 0, pageCount: 16 };
-  const { id, name, chapter, pageCount } = data;
+  const { info: { id, chapter, pageCount } } = context;
 
   let Layout = SinglePageLayout;
   if (context.layout === "double-page") {
@@ -142,9 +178,8 @@ export default function Reader() {
   return (
     <ReaderContext.Provider value={{ context, setContext }}>
       <Container>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <SContent>
-          {/* <Header title={name} /> */}
           <Layout id={id} chapter={chapter} pageCount={pageCount} style={{ flexGrow: 10 }} />
         </SContent>
       </Container>
