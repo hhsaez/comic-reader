@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 import { ReaderContext } from "./ReaderContext";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-
 
 const SPageContainer = styled.div`
   display: flex;
@@ -13,7 +12,7 @@ const SPageContainer = styled.div`
   overflow: auto;
 `;
 
-export default function SinglePageLayout(props) {
+export default function SinglePageLayout() {
   const {
     context: {
       info: {

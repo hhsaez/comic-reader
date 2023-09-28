@@ -196,7 +196,7 @@ export function TopBar(props) {
 }
 
 export function PageNavigationOverlay() {
-  const { context: { showOverlay }, setContext } = useContext(ReaderContext);
+  const { context: { showOverlay, layout }, setContext } = useContext(ReaderContext);
 
   const nextPage = useCallback(() => setContext((ctx) => {
     const { info: { pageCount }, currentPage, layout } = ctx;
@@ -231,11 +231,14 @@ export function PageNavigationOverlay() {
   return (
     <SContainer style={{ opacity: showOverlay ? 1 : 0 }}>
       <TopBar />
-      <SInteractionContainer>
-        <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={prevPage}><NavigateBefore /></SInteractionArea>
-        <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.15)", flexGrow: 8, pointerEvents: "none" }} />
-        <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={nextPage}><NavigateNext /></SInteractionArea>
-      </SInteractionContainer>
+      {
+        layout !== "long-strip" &&
+        <SInteractionContainer>
+          <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={prevPage}><NavigateBefore /></SInteractionArea>
+          <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.15)", flexGrow: 8, pointerEvents: "none" }} />
+          <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={nextPage}><NavigateNext /></SInteractionArea>
+        </SInteractionContainer>
+      }
     </SContainer>
   );
 }
