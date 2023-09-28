@@ -12,21 +12,25 @@ const SContainer = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
+  pointer-events: none;
 
   opacity: 0;
-  transition: all 1s ease-in-out;
+  transition: all .5s ease-in-out;
 `;
 
 const SInteractionContainer = styled.div`
   display: flex;
   flex-grow: 1;
+  pointer-events: none;
 `;
 
 const SInteractionArea = styled.div`
   display: flex;
-  min-width: 100px;
+  width: 20%;
+  min-width: 75px;
   height: 100%;
-  flex-grow: 1;
+  flex-grow: 0;
+  pointer-events: all;
 `;
 
 const NavigateNext = styled.i.attrs(() => ({ className: "material-symbols-outlined" }))`
@@ -67,6 +71,7 @@ const STopBarContainer = styled.div`
   height: 50px;
   min-height: 50px;
   color: black;
+  pointer-events: all;
 
   a { 
     color: black;
@@ -76,10 +81,11 @@ const STopBarContainer = styled.div`
 const STopBarLeftContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  align-items: lef;
+  flex-grow: 0;
+  align-items: left;
   justify-content: center;
   padding-left: 20px;
+  width: 20%;
   min-width: 30px;
 
   span {
@@ -89,7 +95,7 @@ const STopBarLeftContainer = styled.div`
 
 const STopBarMiddleContainer = styled.div`
   display: flex;
-  flex-grow: 3;
+  flex-grow: 2;
   align-items: center;
   justify-content: center;
   min-width: 0;
@@ -101,25 +107,28 @@ const STopBarMiddleContainer = styled.div`
 
   @media screen and (max-width: 400px) {
     label {
-      font-size: 0.8em;
+      display: none;
     }
-  }
-
-  @media screen and (max-width: 300px) {
-    display: none;
   }
 `;
 
 const STopBarRightContainer = styled.div`
   display: flex;
-  flex-grow: 1;
+  flex-grow: 0;
   align-items: center;
   justify-content: right;
   padding-right: 20px;
+  width: 20%;
+  min-width: 30px;
+`;
 
-  span {
-    margin: 0 5px 0 5px;
-  }
+const SButtonGroupContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  align-items: center;
+  justify-content: right;
+  padding-left: 20px;
 `;
 
 function ChangePageLayoutButton(props) {
@@ -129,14 +138,27 @@ function ChangePageLayoutButton(props) {
     setContext((prev) => ({
       ...prev,
       layout: newLayout,
+      imageSizing: newLayout === "double-page" ? "fit-page" : prev.imageSizing,
     }));
   }, [setContext, newLayout]);
   return <span className="material-symbols-outlined" onClick={setNewLayout}>{icon}</span>
 }
 
-export function TopBar() {
+function ChangeImageSizingButton(props) {
+  const { id: newFit, icon } = props;
+  const { setContext } = useContext(ReaderContext);
+  const setNewFit = useCallback(() => {
+    setContext((prev) => ({
+      ...prev,
+      imageSizing: newFit,
+    }));
+  }, [setContext, newFit]);
+  return <span className="material-symbols-outlined" onClick={setNewFit}>{icon}</span>
+}
+
+export function TopBar(props) {
   const { context } = useContext(ReaderContext);
-  const { info: { title, subtitle } } = context;
+  const { info: { title, subtitle }, layout } = context;
 
   const fullTitle = useMemo(() => {
     if (subtitle) {
@@ -146,7 +168,7 @@ export function TopBar() {
   }, [title, subtitle])
 
   return (
-    <STopBarContainer>
+    <STopBarContainer {...props}>
       <STopBarLeftContainer>
         <Link to="/library">
           <span className="material-symbols-outlined">home</span>
@@ -156,21 +178,25 @@ export function TopBar() {
         <label>{fullTitle}</label>
       </STopBarMiddleContainer>
       <STopBarRightContainer>
-        <ChangePageLayoutButton id="single-page" icon="note" />
-        <ChangePageLayoutButton id="double-page" icon="import_contacts" />
-        <ChangePageLayoutButton id="long-strip" icon="calendar_view_day" />
-        {/* <span className="material-symbols-outlined" style={{ pointerEvents: "none" }}>note</span>
-        <span className="material-symbols-outlined">import_contacts</span>
-        <span className="material-symbols-outlined">calendar_view_day</span> */}
+        {
+          layout !== "double-page" &&
+          <SButtonGroupContainer>
+            <ChangeImageSizingButton id="fit-page" icon="fit_page" />
+            <ChangeImageSizingButton id="fit-width" icon="fit_width" />
+          </SButtonGroupContainer>
+        }
+        <SButtonGroupContainer>
+          <ChangePageLayoutButton id="single-page" icon="note" />
+          <ChangePageLayoutButton id="double-page" icon="import_contacts" />
+          <ChangePageLayoutButton id="long-strip" icon="calendar_view_day" />
+        </SButtonGroupContainer>
       </STopBarRightContainer>
     </STopBarContainer>
   );
 }
 
 export function PageNavigationOverlay() {
-  const [visible, setVisible] = useState(true);
-
-  const { setContext } = useContext(ReaderContext);
+  const { context: { showOverlay }, setContext } = useContext(ReaderContext);
 
   const nextPage = useCallback(() => setContext((ctx) => {
     const { info: { pageCount }, currentPage, layout } = ctx;
@@ -190,26 +216,24 @@ export function PageNavigationOverlay() {
     };
   }), [setContext]);
 
-  const toggleSidebar = useCallback(() => {
-    setVisible((prev) => !prev);
-  }, [setVisible]);
+  const hideOverlay = useCallback((prev) => setContext((prev) => ({ ...prev, showOverlay: false })), [setContext]);
 
   useEffect(() => {
-    if (!visible) {
+    if (!showOverlay) {
       return;
     }
-    const timer = setTimeout(() => setVisible(false), 5000);
+    const timer = setTimeout(hideOverlay, 5000);
     return () => {
       clearTimeout(timer);
     }
-  }, [visible, setVisible]);
+  }, [showOverlay, hideOverlay]);
 
   return (
-    <SContainer style={{ opacity: visible ? 1 : 0 }}>
+    <SContainer style={{ opacity: showOverlay ? 1 : 0 }}>
       <TopBar />
       <SInteractionContainer>
         <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={prevPage}><NavigateBefore /></SInteractionArea>
-        <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.15)", flexGrow: 4 }} onClick={toggleSidebar} />
+        <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.15)", flexGrow: 8, pointerEvents: "none" }} />
         <SInteractionArea style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} onClick={nextPage}><NavigateNext /></SInteractionArea>
       </SInteractionContainer>
     </SContainer>

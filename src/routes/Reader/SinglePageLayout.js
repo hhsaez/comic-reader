@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 import { ReaderContext } from "./ReaderContext";
@@ -18,7 +18,7 @@ export default function SinglePageLayout(props) {
       info: {
         id, chapter
       },
-      currentPage,
+      currentPage
     }
   } = useContext(ReaderContext);
 

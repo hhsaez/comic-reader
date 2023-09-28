@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 
@@ -8,6 +8,7 @@ const Pages = styled.div`
   align-items: center;
   width: 100%;
   height: 100vh;
+  overscroll-behavior: none;
   overflow-y: scroll;
 `;
 
