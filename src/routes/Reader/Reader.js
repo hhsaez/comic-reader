@@ -63,12 +63,12 @@ export default function ReaderWithContext() {
       pageCount: 16,
     },
     currentPage: 0,
-    // layout: "single-page",
+    layout: "single-page",
     // layout: "double-page",
-    layout: "long-strip",
+    // layout: "long-strip",
     imageSizing: "fit-page",
     // imageSizing: "fit-width",
-    overlayVisible: true,
+    // overlayVisible: true,
   });
 
   return (

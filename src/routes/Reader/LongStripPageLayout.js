@@ -1,15 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Page from "./Page";
+import { ReaderContext } from "./ReaderContext";
 
 const Pages = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100vh;
-  overscroll-behavior: none;
-  overflow-y: scroll;
+  height: 100%;
 `;
 
 const PagesContainer = styled.div`
@@ -18,13 +17,27 @@ const PagesContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overscroll-behavior: none;
+  overflow-y: scroll;
 `;
 
 export default function LongStripPageLayout(props) {
   const { id, chapter, pageCount } = props;
 
+  const { context: { imageSizing } } = useContext(ReaderContext);
+
   const pages = new Array(pageCount).fill().map((_, pageIndex) => {
-    return <Page key={pageIndex} id={id} chapter={chapter} index={pageIndex + 1} style={{ margin: 5 }} />;
+    return <Page
+      key={pageIndex}
+      id={id}
+      chapter={chapter}
+      index={pageIndex + 1}
+      style={{
+        margin: 5,
+        width: "100%",
+        height: imageSizing === "fit-page" ? "100%" : undefined,
+        // width: imageSizing === "fit-width" ? "100%" : undefined,
+      }} />;
   });
 
   return (

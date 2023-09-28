@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 import { ReaderContext } from "./ReaderContext";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 
 const SPageContainer = styled.div`
@@ -18,13 +19,24 @@ export default function SinglePageLayout(props) {
       info: {
         id, chapter
       },
-      currentPage
+      currentPage,
+      imageSizing,
     }
   } = useContext(ReaderContext);
 
+  const { width, height } = useWindowDimensions();
+
   return (
     <SPageContainer>
-      <Page key={currentPage} id={id} chapter={chapter} index={currentPage + 1} />
+      <Page
+        key={currentPage}
+        id={id} chapter={chapter}
+        index={currentPage + 1}
+        style={{
+          width,
+          height: imageSizing === "fit-page" ? height : undefined
+        }}
+      />
     </SPageContainer>
   );
 }
