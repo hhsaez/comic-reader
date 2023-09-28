@@ -6,6 +6,8 @@ import SinglePageLayout from "./SinglePageLayout";
 import DoublePageLayout from "./DoublePageLayout";
 import "material-symbols";
 import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
+import { useLoaderData } from "react-router";
+import getAllComics from "../../utils/getAllComics";
 
 const Container = styled.div`
     display: flex;
@@ -53,22 +55,23 @@ function Reader() {
   );
 }
 
-export default function ReaderWithContext() {
+export default function ReaderWithContext(params) {
+  const { id, chapter } = useLoaderData();
+  const comics = getAllComics();
+  const { title, subtitle, chapters, hasZeroChapter } = comics[id];
+
   const [context, setContext] = useState({
     info: {
-      id: "jagerlied",
-      title: "Jägerlied",
-      subtitle: "Obertura",
-      chapter: 0,
-      pageCount: 16,
+      id,
+      title,
+      subtitle,
+      chapter,
+      pageCount: chapters[hasZeroChapter ? chapter : chapter - 1].pageCount,
     },
     currentPage: 0,
     layout: "single-page",
-    // layout: "double-page",
-    // layout: "long-strip",
     imageSizing: "fit-page",
-    // imageSizing: "fit-width",
-    // overlayVisible: true,
+    showOverlay: true,
   });
 
   return (

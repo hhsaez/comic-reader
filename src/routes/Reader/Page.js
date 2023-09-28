@@ -1,10 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { ReaderContext } from "./ReaderContext";
 import useTogglePageNavigationOverlay from "../../components/PageNavigationOverlay/useTogglePageNavigationOverlay";
-
-const SContainer = styled.div`
-`;
 
 const SImage = styled.img`
   // display: flex;
@@ -24,27 +20,17 @@ function pad(num, places) {
 }
 
 export default function Page(props) {
-  const { context: { imageSizing } } = useContext(ReaderContext);
-
   const toggleOverlay = useTogglePageNavigationOverlay();
 
   const { id, chapter, index, style, ...rest } = props;
 
-  const src = process.env.PUBLIC_URL + `/${id}/${pad(chapter, 2)}/${pad(index, 4)}.png`;
+  const src = process.env.PUBLIC_URL + `/${id}/${chapter}/${pad(index, 4)}.png`;
   return (
-    // <SContainer key={index} {...rest}>
     <SImage key={index} {...rest}
       onClick={toggleOverlay}
       src={src}
       alt={`${id}_${index}`}
-      style={{
-        ...style,
-        // width: imageSizing === "fit-width" ? "100vw" : "auto",
-        // height: imageSizing === "fit-page" ? "100vh" : "auto",
-        // overflow: imageSizing === "fit-width" ? "visible" : "auto",
-        // backgroundImage: `url(${src})`,
-      }} />
-    // </SContainer>
+      style={style} />
   );
 }
 

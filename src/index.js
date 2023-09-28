@@ -2,15 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createHashRouter } from 'react-router-dom';
 import Library from './routes/Library';
-import Reader from './routes/Reader';
+import Reader, { readerLoader } from './routes/Reader';
 
-const router = createBrowserRouter([
+// Use a hash router in order to make it work with Github pages
+const router = createHashRouter([
   { path: '/', element: <Library /> },
-  { path: '/comic-reader', element: <Library /> },
   { path: '/library', element: <Library /> },
-  { path: '/reader', element: <Reader /> },
+  { path: '/reader/:id/:chapter', element: <Reader />, loader: readerLoader },
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
