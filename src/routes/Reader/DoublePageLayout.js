@@ -19,46 +19,54 @@ const SContainer = styled.div`
   overflow: auto;
 `;
 
-export default function DoublePageLayout(props) {
+export default function DoublePageLayout() {
   const {
     context: {
       info: {
-        id, chapter
+        id, chapter, pageCount
       },
       currentPage,
     }
   } = useContext(ReaderContext);
 
-  // Left page is always the even one.
-  const firstPage = currentPage % 2 === 0 ? currentPage : currentPage - 1;
+  const showFirstPageOnly = currentPage === 0;
+  // Because we're adding up to 2 pages at once, we need to compar with pageCount instead of (pageCount - 1)
+  const showLastPageOnly = currentPage === pageCount;
+  const isFirstOrLastPage = showFirstPageOnly || showLastPageOnly;
 
   const { width, height } = useWindowDimensions();
 
   return (
     <SContainer>
       <SPagesContainer>
-        <Page
-          key={firstPage - 1}
-          id={id}
-          chapter={chapter}
-          index={firstPage}
-          style={{
-            width: 0.5 * width,
-            height,
-            objectPosition: "right"
-          }}
-        />
-        <Page
-          key={firstPage}
-          id={id}
-          chapter={chapter}
-          index={firstPage + 1}
-          style={{
-            width: 0.5 * width,
-            height,
-            objectPosition: "left"
-          }}
-        />
+        {
+          !showFirstPageOnly &&
+          <Page
+            key={currentPage}
+            id={id}
+            chapter={chapter}
+            index={currentPage}
+            style={{
+              width: !isFirstOrLastPage ? 0.5 * width : width,
+              height,
+              objectPosition: !isFirstOrLastPage ? "right" : "center",
+            }}
+          />
+        }
+        {
+          !showLastPageOnly &&
+          <Page
+            key={currentPage + 1}
+            id={id}
+            chapter={chapter}
+            index={currentPage + 1}
+            style={{
+              width: !isFirstOrLastPage ? 0.5 * width : width,
+              height,
+              objectPosition: !isFirstOrLastPage ? "left" : "center",
+            }}
+          />
+        }
       </SPagesContainer>
     </SContainer>
   );
