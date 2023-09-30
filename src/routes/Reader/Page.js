@@ -3,16 +3,7 @@ import styled from "styled-components";
 import useTogglePageNavigationOverlay from "../../components/PageNavigationOverlay/useTogglePageNavigationOverlay";
 
 const SImage = styled.img`
-  // display: flex;
-  // flex-grow: 1;
-  // flex-direction: row;
-  // align-self: center;
-  // max-width: 100%;
-  // overflow: auto;
   object-fit: contain;
-  // background-size: contain;
-  // background-position: center;
-  // background-repeat: no-repeat;  
 `;
 
 function pad(num, places) {

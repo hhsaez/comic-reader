@@ -5,6 +5,9 @@ const comics = {
         "chapters": [
             {
                 "pageCount": 16
+            },
+            {
+                "pageCount": 16
             }
         ]
     },
@@ -15,7 +18,7 @@ const comics = {
                 "pageCount": 8
             }
         ]
-    }
+    },
 };
 
 export default function getAllComics() {

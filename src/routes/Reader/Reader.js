@@ -70,11 +70,27 @@ function Reader() {
       }
     };
 
+    const handleKeyUp = (event) => {
+      const callback = {
+        "a": prevPage,
+        "j": prevPage,
+        "Left": prevPage,
+        "ArrowLeft": prevPage,
+        "d": nextPage,
+        "l": nextPage,
+        "ArrowRight": nextPage,
+        "Right": nextPage,
+      }[event.key];
+      callback?.();
+    };
+
     window.addEventListener("touchstart", handleTouchStart);
     window.addEventListener("touchend", handleTouchEnd);
+    window.addEventListener("keyup", handleKeyUp);
     return () => {
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener("keyup", handleKeyUp);
     }
   })
 
@@ -109,7 +125,15 @@ export default function ReaderWithContext(params) {
 
   return (
     <ReaderContext.Provider value={{ context, setContext }}>
-      <Reader />
+      <div style={{
+        overflow: "hidden",
+        position: "fixed",
+        width: "100%",
+        height: "100%",
+      }}>
+
+        <Reader />
+      </div>
     </ReaderContext.Provider>
   );
 }
