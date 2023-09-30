@@ -10,6 +10,7 @@ import { useLoaderData } from "react-router";
 import getAllComics from "../../utils/getAllComics";
 import useGoToNextPage from "../../hooks/useGoToNextPage";
 import useGoToPrevPage from "../../hooks/useGoToPrevPage";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 const Container = styled.div`
     display: flex;
@@ -109,6 +110,9 @@ export default function ReaderWithContext(params) {
   const comics = getAllComics();
   const { title, subtitle, chapters, hasZeroChapter } = comics[id];
 
+  const { width, height } = useWindowDimensions();
+  const layout = width > height ? "double-page" : "long-strip";
+
   const [context, setContext] = useState({
     info: {
       id,
@@ -118,7 +122,7 @@ export default function ReaderWithContext(params) {
       pageCount: chapters[hasZeroChapter ? chapter : chapter - 1].pageCount,
     },
     currentPage: 0,
-    layout: "single-page",
+    layout,
     imageSizing: "fit-page",
     showOverlay: true,
   });
