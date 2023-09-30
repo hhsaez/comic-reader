@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { ReaderContext } from "../../routes/Reader/ReaderContext";
 import { Link } from "react-router-dom";
@@ -138,6 +138,8 @@ function ChangePageLayoutButton(props) {
     setContext((prev) => ({
       ...prev,
       layout: newLayout,
+      // Ensures double page is shown correctly
+      currentPage: newLayout === "double-page" && prev.currentPage % 2 !== 0 ? prev.currentPage + 1 : prev.currentPage,
       imageSizing: newLayout === "double-page" ? "fit-page" : prev.imageSizing,
     }));
   }, [setContext, newLayout]);
