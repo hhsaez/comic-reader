@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import LongStripPageLayout from "./LongStripPageLayout";
 import { ReaderContext } from "./ReaderContext";
@@ -8,6 +8,8 @@ import "material-symbols";
 import { PageNavigationOverlay } from "../../components/PageNavigationOverlay";
 import { useLoaderData } from "react-router";
 import getAllComics from "../../utils/getAllComics";
+import useGoToNextPage from "../../hooks/useGoToNextPage";
+import useGoToPrevPage from "../../hooks/useGoToPrevPage";
 
 const Container = styled.div`
     display: flex;
@@ -44,6 +46,37 @@ function Reader() {
   } else if (layout === "long-strip") {
     Layout = LongStripPageLayout;
   }
+
+  const nextPage = useGoToNextPage();
+  const prevPage = useGoToPrevPage();
+
+  const touchStartRef = useRef();
+  useEffect(() => {
+    const handleTouchStart = (event) => {
+      touchStartRef.current = event.changedTouches[0];
+    };
+
+    const handleTouchEnd = (event) => {
+      const touchEnd = event.changedTouches[0];
+      const touchStart = touchStartRef.current;
+      const xDiff = touchEnd.screenX - touchStart.screenX;
+      const yDiff = touchEnd.screenY - touchStart.screenY;
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff < 0) {
+          nextPage();
+        } else if (xDiff > 0) {
+          prevPage();
+        }
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    }
+  })
 
   return (
     <Container>
