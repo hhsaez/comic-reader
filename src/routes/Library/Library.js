@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo } from "react";
-import ReactGA from "react-ga";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import getAllComics from "../../utils/getAllComics";
@@ -42,10 +41,6 @@ const CoverContainer = styled.div`
 `;
 
 function Library() {
-  useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
-
   const comics = useMemo(() => {
     const allComics = getAllComics();
     return Object.keys(allComics).flatMap((comicId) => {

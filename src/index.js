@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -8,8 +8,7 @@ import Library from './routes/Library';
 import Reader, { readerLoader } from './routes/Reader';
 
 // Initialize GA
-const TRACKING_ID = "G-G5JX7T81HT";
-ReactGA.initialize(TRACKING_ID);
+ReactGA.initialize("G-G5JX7T81HT");
 
 // Use a hash router in order to make it work with Github pages
 const router = createHashRouter([
