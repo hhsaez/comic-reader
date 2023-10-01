@@ -1,7 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import ReactGA from "react-ga";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import getAllComics from "../../utils/getAllComics";
+import withPageViewTracking from "../../hooks/withPageViewTracking";
 
 const CoverImage = styled.img`
   width: 100%;
@@ -39,7 +41,11 @@ const CoverContainer = styled.div`
   align-items: center;
 `;
 
-export default function Library() {
+function Library() {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
   const comics = useMemo(() => {
     const allComics = getAllComics();
     return Object.keys(allComics).flatMap((comicId) => {
@@ -53,7 +59,7 @@ export default function Library() {
           hasZeroChapter: !!comic.hasZeroChapter,
         }
         return (
-          <CoverContainer>
+          <CoverContainer key={`${comicId}/${index}`}>
             <Cover {...comicInfo} />
           </CoverContainer>
         )
@@ -65,4 +71,6 @@ export default function Library() {
     <Container>
       {comics}
     </Container >);
-} 
+}
+
+export default React.memo(withPageViewTracking(Library));

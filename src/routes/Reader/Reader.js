@@ -11,6 +11,7 @@ import getAllComics from "../../utils/getAllComics";
 import useGoToNextPage from "../../hooks/useGoToNextPage";
 import useGoToPrevPage from "../../hooks/useGoToPrevPage";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import withPageViewTracking from "../../hooks/withPageViewTracking";
 
 const Container = styled.div`
     display: flex;
@@ -109,10 +110,10 @@ function Reader() {
   );
 }
 
-export default function ReaderWithContext(params) {
+function ReaderWithContext(params) {
   const { id, chapter: chapterIndex } = useLoaderData();
   const comics = getAllComics();
-  const { title, subtitle, chapters, hasZeroChapter } = comics[id];
+  const { title, chapters, hasZeroChapter } = comics[id];
 
   const { width, height } = useWindowDimensions();
   const layout = width > height ? "double-page" : "long-strip";
@@ -147,3 +148,4 @@ export default function ReaderWithContext(params) {
   );
 }
 
+export default React.memo(withPageViewTracking(ReaderWithContext));

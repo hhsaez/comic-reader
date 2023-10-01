@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef } from "react";
+import React, { useContext, useMemo } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 import { ReaderContext } from "./ReaderContext";
@@ -36,9 +36,8 @@ export default function LongStripPageLayout(props) {
         margin: 5,
         width: "100%",
         height: imageSizing === "fit-page" ? "100%" : undefined,
-        // width: imageSizing === "fit-width" ? "100%" : undefined,
       }} />;
-  }), [id, chapter, pageCount]);
+  }), [id, chapter, pageCount, imageSizing]);
 
   return (
     <PagesContainer >
