@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import Page from "./Page";
 import { ReaderContext } from "./ReaderContext";
@@ -26,7 +26,7 @@ export default function LongStripPageLayout(props) {
 
   const { context: { imageSizing } } = useContext(ReaderContext);
 
-  const pages = new Array(pageCount).fill().map((_, pageIndex) => {
+  const pages = useMemo(() => new Array(pageCount).fill().map((_, pageIndex) => {
     return <Page
       key={pageIndex}
       id={id}
@@ -38,10 +38,10 @@ export default function LongStripPageLayout(props) {
         height: imageSizing === "fit-page" ? "100%" : undefined,
         // width: imageSizing === "fit-width" ? "100%" : undefined,
       }} />;
-  });
+  }), [id, chapter, pageCount]);
 
   return (
-    <PagesContainer>
+    <PagesContainer >
       <Pages>
         {pages}
       </Pages>

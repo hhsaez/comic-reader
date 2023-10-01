@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { ReaderContext } from "../../routes/Reader/ReaderContext";
 import { Link } from "react-router-dom";
+import useTogglePageNavigationOverlay from "./useTogglePageNavigationOverlay";
 
 const SContainer = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ const SInteractionArea = styled.div`
   height: 100%;
   flex-grow: 0;
   pointer-events: all;
+  cursor: pointer;
 `;
 
 const NavigateNext = styled.i.attrs(() => ({ className: "material-symbols-outlined" }))`
@@ -129,6 +131,7 @@ const SButtonGroupContainer = styled.div`
   align-items: center;
   justify-content: right;
   padding-left: 20px;
+  cursor: pointer;
 `;
 
 function ChangePageLayoutButton(props) {
@@ -155,7 +158,7 @@ function ChangeImageSizingButton(props) {
       imageSizing: newFit,
     }));
   }, [setContext, newFit]);
-  return <span className="material-symbols-outlined" onClick={setNewFit}>{icon}</span>
+  return <span className="material-symbols-outlined" style={{ cursor: "pointer" }} onClick={setNewFit}>{icon}</span>
 }
 
 export function TopBar(props) {
@@ -167,10 +170,12 @@ export function TopBar(props) {
       return `${title}: ${subtitle}`;
     }
     return title || "NO TITLE";
-  }, [title, subtitle])
+  }, [title, subtitle]);
+
+  const toggleOverlay = useTogglePageNavigationOverlay();
 
   return (
-    <STopBarContainer {...props}>
+    <STopBarContainer {...props} onClick={toggleOverlay}>
       <STopBarLeftContainer>
         <Link to="/library">
           <span className="material-symbols-outlined">home</span>

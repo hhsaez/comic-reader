@@ -77,10 +77,14 @@ function Reader() {
         "j": prevPage,
         "Left": prevPage,
         "ArrowLeft": prevPage,
+        "Up": prevPage,
+        "ArrowUp": prevPage,
         "d": nextPage,
         "l": nextPage,
         "ArrowRight": nextPage,
         "Right": nextPage,
+        "Down": nextPage,
+        "ArrowDown": nextPage,
       }[event.key];
       callback?.();
     };
