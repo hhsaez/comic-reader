@@ -106,20 +106,21 @@ function Reader() {
 }
 
 export default function ReaderWithContext(params) {
-  const { id, chapter } = useLoaderData();
+  const { id, chapter: chapterIndex } = useLoaderData();
   const comics = getAllComics();
   const { title, subtitle, chapters, hasZeroChapter } = comics[id];
 
   const { width, height } = useWindowDimensions();
   const layout = width > height ? "double-page" : "long-strip";
 
+  const chapter = chapters[hasZeroChapter ? chapterIndex : chapterIndex - 1];
   const [context, setContext] = useState({
     info: {
       id,
       title,
-      subtitle,
-      chapter,
-      pageCount: chapters[hasZeroChapter ? chapter : chapter - 1].pageCount,
+      subtitle: chapter.subtitle,
+      chapter: chapterIndex,
+      pageCount: chapter.pageCount,
     },
     currentPage: 0,
     layout,
