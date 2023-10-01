@@ -15,7 +15,7 @@ const CoverImage = styled.img`
 function Cover(props) {
   const { id, title, chapter: chapterIndex, hasZeroChapter } = props;
   const chapter = chapterIndex + (hasZeroChapter ? 0 : 1);
-  const src = process.env.PUBLIC_URL + `/${id}/${chapter}/0001.png`;
+  const src = process.env.PUBLIC_URL + `/${id}/${chapter}/cover.jpg`;
   return (<Link to={`/reader/${id}/${chapter}`}><CoverImage src={src} alt={title} /></Link>);
 }
 

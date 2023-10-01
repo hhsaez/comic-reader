@@ -15,7 +15,7 @@ export default function Page(props) {
 
   const { id, chapter, index, style, ...rest } = props;
 
-  const src = process.env.PUBLIC_URL + `/${id}/${chapter}/${pad(index, 4)}.png`;
+  const src = process.env.PUBLIC_URL + `/${id}/${chapter}/${pad(index, 4)}.jpg`;
   return (
     <SImage key={index} {...rest}
       onClick={toggleOverlay}
