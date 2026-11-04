@@ -40,6 +40,38 @@ const CoverContainer = styled.div`
   align-items: center;
 `;
 
+const Footer = styled.footer`
+  display: flex;
+  justify-content: center;
+  padding: 32px 20px 48px;
+`;
+
+const AuthorLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: black;
+  font-size: 20px;
+  text-underline-offset: 4px;
+  border-radius: 4px;
+
+  &:hover {
+    color: #555;
+  }
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 6px;
+  }
+`;
+
+const Avatar = styled.img`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
 function Library() {
   const comics = useMemo(() => {
     const allComics = getAllComics();
@@ -63,9 +95,17 @@ function Library() {
   }, []);
 
   return (
-    <Container>
-      {comics}
-    </Container >);
+    <>
+      <Container>
+        {comics}
+      </Container>
+      <Footer>
+        <AuthorLink href="https://hhsaez.com">
+          <Avatar src={process.env.PUBLIC_URL + "/avatar.png"} alt="" width="64" height="64" />
+          <span>hhsaez.com</span>
+        </AuthorLink>
+      </Footer>
+    </>);
 }
 
 export default React.memo(withPageViewTracking(Library));
