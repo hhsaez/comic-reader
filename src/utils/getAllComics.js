@@ -1,18 +1,12 @@
 const comics = {
-    "jagerlied": {
+    "jagerlied-shadows": {
         "title": "Jägerlied",
-        "hasZeroChapter": true,
         "overview": "Un cazador, una mujer, y un relato imposible.",
         "chapters": [
             {
-                "subtitle": "Obertura",
-                "date": "2020-12-23",
-                "pageCount": 16
-            },
-            {
-                "subtitle": "Canto I",
-                "date": "2023-09-23",
-                "pageCount": 20
+                "subtitle": "Sombras sobre Nhil",
+                "date": "2024-11-08",
+                "pageCount": 48
             }
         ]
     },
