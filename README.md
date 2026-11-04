@@ -45,9 +45,13 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 
 ### `yarn deploy`
 
-Builds the app for production and deploys it as a Github page.
+Builds the app for production and pushes the build to the legacy `gh-pages` branch.
 
-This uses the `gh-pages` branch.
+### Automatic deployment
+
+The `Deploy to GitHub Pages` workflow installs dependencies with `npm ci`, builds the app, and deploys the `build` directory whenever `main` changes. It can also be run manually from the repository's Actions tab. Only `main` can deploy to production.
+
+After merging the workflow, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. The existing custom domain, `comics.hhsaez.com`, and HTTPS settings remain configured in GitHub Pages. Future deployments use the workflow instead of `yarn deploy`.
 
 ## Learn More
 
